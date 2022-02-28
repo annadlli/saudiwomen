@@ -1,0 +1,609 @@
+---
+title: "The effects of Social Norms on Hindering Women from Work - Saudi Arabia "
+author: 
+  - Anna Li
+thanks: "Code, data, replication are available at :https://github.com/annadlli/saudiwomen.git. Replication approach is available at https://doi.org/10.48152/ssrp-kp0d-9241."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "Despite progress made in Saudi Arabia to achieve gender equality, there is still distinct gaps in life. One instance is the low labour participation rate of women. This paper investigate Saudi Arabian husbands, who make the employment decisions for their wives', perceptions of societal support of women working outside of home difference from reality and the effect such a mismatch can have upon the employment status of their wives, specifically looking at how education and the husband's own employment status can affect their decision. Education and employment status of the husband has no significant impact on their decision on their wive's employment status; nevertheless, clarifying the misperception and demonstrating the high social support leads to higher job-matching sign up rate and willingness to allow their wives to participate in employment."
+output:
+  bookdown::pdf_document2
+toc: FALSE
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(patchwork)
+```
+
+# Introduction
+
+Saudi Arabia is a country that has made large improvements for gender equality. However, not all of the results have been reflected in terms of real-life statistics. Saudi Arabia's female population had only  around 18% labour participation rate in  2017 (@citeog). Finding what is behind this low participation rate is crucial if Saudi Arabia is to increase its overall effeciency. Improving human capital is only the first step; if the improved human capital is not utilized, there will be no effect. 
+
+This paper looks specifically at how husbands' perceived social norms regarding support of women working outside of home affects the employment status of the wife. This paper is based on (@citeog) and extends the study into considering the specific effect of education and the employment status of the husband. First, an investigation into the perception of support of women working outside of home is conducted. A difference between the perceived proportion of support and actual level of support is utilized as the idea of a misperception about the reality for support of women working outside of home. Then, the effect of such a misperception is analyzed, by seeing how clarifying the misperception will affect the behaviour of husbands. Saudi Arabia is a country with male guardianship, where the male in the family makes the decisions for the women (@citeguardianship). Therefore, affecting the behaviour of husband will potentially affect the employment status of the wife. 
+
+The paper specifically fills the gap of how the employment status of the husband and the educational level can affect both the misperception and behaviour of the husband. With the rise for more gender equality in Saudi Arabia and the push for more individualism, it would seem like higher education could be correlated to a higher belief and level of support for women working outside of home (@citeedustat). Furthermore, considering the patriarchal society and male-dominant role in family, it could be possible that the husband would dislike if the wife was a better achiever than him, as this would give power to the wife. 
+
+The paper finds that education and employment status do not play a direct, significant role in terms of the size of misperception or influencing the behaviour of people. If progress is to be made to correct misperceptions regarding areas similar to support of women working outside of home, such as supporting women to drive, policies should be made targeting different areas than education and empowering the husband. 
+
+
+
+The remainder of the paper is split into four sections. Section \@ref(data) explains the data, data source, data collection method, potential bias within data, and data characteristics. Section \@ref(methodology) briefly discusses what the methods were utilized to produce the desired results and answer the research question. Section \@ref(results) relays the limitations of this study and what are further steps that could be taken with the results. Section \@ref(discussion) discusses what the findings in results mean, the limitations in interpreting the findings of the paper, and potential next steps to have better findings. 
+
+
+
+
+# Data
+
+This report was conducted using the R statistical programming language [@citeR] , with specifically tidyverse [@citetidyverse], knitr[@citeknitr] and gpplot2 [@citeggplot2]  mainly used for analysis. The package here [@citehere] was used to ensure the working directory paths were accurate. Raw data was downloaded and read through haven [@citehaven], with the original data and replication package downloaded from @citeog.
+
+## Data Source and Collection
+
+The dataset used are from the replication package of the paper "Misperceived Social Norms: Women Working Outside the Home in Saudi Arabia." Specifically, the main experiment dataset and followup suvery dataset are used. 
+
+### Main Experiment
+  
+The main experiment dataset was collected by the authors through partnering with a local branch of an international survey company, recruiting 500 Saudi Males living across Riyadh as participants. To come up with the sample, a combination of snowball sampling and random street intercept was utilized. Participants come from a variety of districts that represent different socieconomic classes, being given the incentive of gift cards to finish the survey. Participants were split into 17 experimental sessions, separated by geographical area, with 30 particpants in each room. Surveys were filled out on the phones of participants through using Qualtrics, on-site with a survey facilitator in the room. 
+  
+The raw dataset has a total of 500 observations of 32 different variables. Variables include information regarding the demographics of participants, their beliefs regarding a variety of labor market issues, and information regarding their relationship with other participants in the same session. Relating to the topic at hand, there are a few variables that are of major focus. 
+  
+Wife employed and Employed Self describe the current employment status of the family. It helps determine a baseline, before any adjustments are made to change perceptions, and potentially employment status of the household. 
+
+Condition represents whether the participant was placed within the control or treatment group for the second half of the survey. Depending on which group they were in, participants were given access to the true proportion of participants who support women working outside of home. 
+
+Outside guess, outside objective, and outside confidence describe the variables directly related to perceptions regarding women working outside of home. Outside guess describes the participant's guess of how the overall session answered in terms of supporting women working outside of home. Outside objective refers to the actual proportion of the overall session who supported women working outside of home. Outside wedge measures the percentage difference between the individual guess of participants and the objective true value. 
+
+Within the sample, there are 3 candidates with an age greater than 100. Considering that this is highly implausible, these observations are eliminated from the further analysis done in the report. 
+
+### Followup Survey
+
+The followup survey was conducted in a similar fashion as the main experiment, with the authors of "Misperceived Social Norms: Women Working Outside the Home in Saudi Arabia" partnering with the same survey company to re-contact the same 500 participants. This followup survey was conducted around three to five months after the main experiment, with the survey issued through phone calls. Survey questions were directly asked to participants, with a gift card also offered as a reward for completing the survey. A total of 500 observations and 33 variables were recorded. 
+
+In addition to the same variables it recorded as main experiment, the followup survey created a few more variables that could measure the specific impact the main experiment had on women working outside of home. Wife employed 3 months before follow-up demonstrates that these were the same people who held a job before the experiment was held. Currently employed outside home records the number of wives who have taken on a job outside of their home. Similar variables include applied for a job outside the home, interviewed for a job outside of home, and scheduled to have an interview for a job outside of home. These additional measures in addition to the direct perception measures of outside guess, outsie objective, and outside confidence will provide insight on how participants and their wife's working status has changed. 
+
+## Original Authors
+
+This paper is a reproduction and extension of the paper "Misperceived Social Norms: Women Working Outside the Home in Saudi Arabia". The same dataset is used by the authors. The authors find that participants wildly underestimate the overall support for women working outside of home, despite often having personal beliefs supporting the cause. The author also finds a positive correlation of having knowledge of the community's support for women working outside of home and of participants' wives choosing to take on a job outside of home. 
+
+The original study focused on participants in the age range of 18-36, married, and who had a college degree or above. The authors chose the criteria for logistics purpose, believing that this age range was the most likely to use smartphones, the main device for administering the experiment and surveys to investigate the situation. 
+
+The original study found that around 72% of participants strictly underestimate support for women working outside of home among each session. The overall average guess for the support of women working outside of home was 63%, while the actual average level of agreement across all 500 participants was 87%. Focusing on the participants who support women working outside of home, the average guess for support was 18.7, much higher than the other participants. 
+
+Checking how the perceptions yield real-life results, participants were 36.4% more likely to sign their wives up for a job-matching service if they were a part of the treatment group, gaining knowledge of the actual level of support for women working outside of home. The percentage of wives who applied for jobs, gained interviews, and were employed all increased respectively (5.8% to 16.8%, 1.1% to 5.8%, 7.4% to 9.4%).
+
+Finally, the authors find that that there seems to be information spillover, where those who are a part of the control group also displayed more supportive behaviour of women working outside of home, perhaps due to their close relationship with the treatment group neighbours. 
+
+To add on to the work of the authors, I plan on conducting three changes to the original research.
+
+1. I will be looking at the differences of participants who attain a secondary degree in education and for those who received a college degree in education and above. This will create a larger sample for analysis, and will hopefully provide the ability to make larger generalizations to the population. 
+
+2. A factor that I will investigate in addition is whether the participant's own employment status has any effect on the results. It is possible that gender stereotypes and family power balances could play a role in the perceptions of women working outside of home and the job status of the wife. This is highly likely, as men partake on the guardianship role for the women in their life, making all decisions for them [@citeguardianship].
+
+3.  I will be focusing on the main experiment and followup survey results, specifically the wedge in perceptions and effect on sign-up rates. This is mainly due to a time constraint, as the original author utilizes six different datasets to conduct a large range of analysis that covers aspects of life that do not necessarily relate to working outside of home and perceptions directly. The main experiment and followup survey results should be sufficient in providing initial insights to the situation of perception affecting women working outside of home in Saudi Arabia. 
+
+I will be following the same process of analysis as the original authors, in order to create comparable results. 
+
+### Potential Issues and Bias
+
+Overall, the authors of the original paper provided several checks to demonstrate that survey bias was minimal, if present, and had no real effect on the results. However, there are a few factors that should be kept in mind. While the dataset does focus on participants from the age of 18-36, the criteria of having a college degree or higher narrows the range to approximately 22-36, considering that 18 is the typical year to graduate from secondary and 22 the year to finish a bachelor's degree. The guesses made by the participants represent their own knowledge and bias, which can explain the differences in accuracy of guessing to the true proportion of support for women working outside of home. The observations in the dataset are all information provided from the participant. While there is no obvious incentive to provide false information, it is a possiblity to consider. 
+
+In the data cleaning process, I followed the standards of the original authors and ensured to protect the privacy and anonymous status of the participants. This was done by eliminating the identifying 3 last digits of the participants' phone numbers, used in tracking them for the followup survey. The code and raw data used to conduct the cleaning and analysis in this paper is completely reproducible and visible to the public under my GitHub repository. 
+
+
+
+## Data Characteristics
+```{r data_cleaning, include = FALSE}
+#cleans data for analysis
+#uses file 02_datacleaning.R's output
+main_exp<-read_csv(("../../inputs/data/main_exp_clean_paper.csv"))
+followup<-read_csv(("../../inputs/data/followup_clean_paper.csv"))
+main_exp<- main_exp %>% mutate(college = as.integer((education >= 6)))
+
+#eliminate unreasonable ages
+main_exp$age[which(main_exp$age >100)]<-0
+main_exp$age[which(main_exp$age == 0)]<-0
+main_exp<- main_exp %>% filter(age != 0)
+followup$age[which(followup$age >100)]<-0
+followup$age[which(followup$age == 0)]<-0
+followup<- followup %>% filter(age != 0)
+```
+
+### Overall Characteristics: Similar Across Different Conditions
+```{r table1data , include = FALSE}
+## generate followup info
+outside_wife<- followup %>% filter(matched ==1) %>%
+  group_by(condition2) %>% 
+  summarise(outside = (mean(employed_3mos_out_fl)*100))
+outside_wife_all<-followup %>% filter(matched == 1) %>% 
+  summarise(outside_all = mean(employed_3mos_out_fl)*100)
+
+##add parentheses around sd observations
+add_par <- function(x){
+  paste("(",x,")")
+}
+
+#All
+n<-nrow(main_exp)
+m_age<-round(mean(main_exp$age,na.rm= TRUE),2)
+sd_age<-add_par(round(sd(main_exp$age,na.rm = TRUE),2))
+m_child<-round(mean(main_exp$children,na.rm = TRUE),2)
+sd_child<-add_par(round(sd(main_exp$children, na.rm = TRUE),2))
+secondary<-round((sum(main_exp$secondary)/n)*100,2)
+employ<-round((sum(main_exp$employed_now)/n)*100,2)
+wife_employ<-round((sum(main_exp$employed_wife)/n)*100,2)
+wife_w_outside<-round(outside_wife_all[[1,1]],2)
+m_others<-round((sum(main_exp$num_knows_per)/n)*100,2)
+sd_others<-add_par(round(sd(main_exp$num_knows_per,na.rm = TRUE)*100,2))
+m_others_friends<-round((sum(main_exp$num_mfs_per)/n)*100,2)
+sd_others_friends<-add_par(round(sd(main_exp$num_mfs_per,na.rm = TRUE)*100,2))
+all_sum<-c(n, m_age, sd_age, m_child, sd_child, secondary, employ, wife_employ, wife_w_outside, m_others,sd_others, m_others_friends,sd_others_friends)
+all_age<-m_age
+
+#Control
+control<-main_exp %>% filter(condition2 == 0)
+n<-nrow(control)
+m_age<-round(mean(control$age,na.rm= TRUE),2)
+sd_age<-add_par(round(sd(control$age,na.rm = TRUE),2))
+m_child<-round(mean(control$children,na.rm = TRUE),2)
+sd_child<-add_par(round(sd(control$children, na.rm = TRUE),2))
+secondary<-round((sum(control$secondary)/n)*100,2)
+employ<-add_par(round((sum(control$employed_now)/n)*100,2))
+wife_employ<-round((sum(control$employed_wife)/n)*100,2)
+wife_w_outside<-round(outside_wife[[1,2]],2)
+m_others<-round((sum(control$num_knows_per)/n)*100,2)
+sd_others<-add_par(round(sd(control$num_knows_per,na.rm = TRUE)*100,2))
+m_others_friends<-round((sum(control$num_mfs_per)/n)*100,2)
+sd_others_friends<-add_par(round(sd(control$num_mfs_per,na.rm = TRUE)*100,2))
+control_sum<-c(n, m_age, sd_age, m_child, sd_child, secondary, employ, wife_employ, wife_w_outside, m_others,sd_others, m_others_friends,sd_others_friends)
+control_age<- m_age
+
+#Treatment
+treatment<-main_exp %>% filter(condition2 == 1)
+n<-nrow(treatment)
+m_age<-round(mean(treatment$age,na.rm= TRUE),2)
+sd_age<-add_par(round(sd(treatment$age,na.rm = TRUE),2))
+m_child<-round(mean(treatment$children,na.rm = TRUE),2)
+sd_child<-add_par(round(sd(treatment$children, na.rm = TRUE),2))
+secondary<-round((sum(treatment$secondary)/n)*100,2)
+employ<-round((sum(treatment$employed_now)/n)*100,2)
+wife_employ<-round((sum(treatment$employed_wife)/n)*100,2)
+wife_w_outside<-round(outside_wife[[2,2]],2)
+m_others<-round((sum(treatment$num_knows_per)/n)*100,2)
+sd_others<-add_par(round(sd(treatment$num_knows_per,na.rm = TRUE)*100,2))
+m_others_friends<-round((sum(treatment$num_mfs_per)/n)*100,2)
+sd_others_friends<-add_par(round(sd(treatment$num_mfs_per,na.rm = TRUE)*100,2))
+treatment_sum<-c(n, m_age, sd_age, m_child, sd_child, secondary, employ, wife_employ, wife_w_outside, m_others,sd_others, m_others_friends,sd_others_friends)
+treatment_age <-m_age
+```
+
+```{r table1, echo = FALSE}
+table1<-cbind(all_sum, control_sum, treatment_sum)
+row.names(table1)= c("N","Age","sd Age","Number of Children","sd Children","Secondary and Above (%)","Employed (%)","Wife Employed (%)", "Wife Working Outside the Home (% retrospective follow-up)", "Other Participants Known (%)", "sd Other Participants Known (%)","Other Participants with Mutual Friends (%)","sd Other Participants with Mutual Friends (%)")
+table1 %>% kbl( booktabs = T, col.names=c("All","Control","Treatment"),caption="Summary Statistics for Main Experiment (Mean and Standard Deviations)",
+                align=rep('c', 5)) %>% 
+                  row_spec(1, hline_after = TRUE) %>%
+                  row_spec(9, hline_after = TRUE) %>%
+                  row_spec(12, hline_after = TRUE) %>% 
+  kable_styling()
+```
+
+Table \@ref(tab:table1) is created through the kable function in the knitr package and @citekableExtra. It provides summary statistics for the main experiment, specifically the mean and standard deviations. Out of the 500 participants, around half were allocated into both the control and treatment group (247 and 253 participants respectively). The overall characteristics for each group were quite similar. As participants were put into sessions according to their geographical area, the percentage of other participants known and whom they are friends with is quite high. It is notable that while around 65% of the participants' wives are employed, only 8-9 percent of them are actually working outside of home. 
+
+
+### Differences in Education: Most Participants have a Secondary Degree or Above
+
+
+```{r table2, echo = FALSE}
+#comparison betwen author and and my paper, difference in education range
+#all
+n<-nrow(main_exp)
+college_all<-round((sum(main_exp$college)/n)*100,2)
+college_count<-(sum(main_exp$college))
+secondary_count<-sum(main_exp$secondary)
+secondary<-round((sum(main_exp$secondary)/n)*100,2)
+#control
+n<-nrow(control)
+college_control<-round((sum(control$college)/n)*100,2)
+college_control_count<-(sum(control$college))
+secondary_control_count<-sum(control$secondary)
+secondary_control<-round((sum(control$secondary)/n)*100,2)
+
+
+#treatment
+n<-nrow(treatment)
+college_treatment<-round((sum(treatment$college)/n)*100,2)
+college_treatment_count<-(sum(treatment$college))
+secondary_treatment_count<-sum(treatment$secondary)
+secondary_treatment<-round((sum(treatment$secondary)/n)*100,2)
+
+#bind
+all_edu<-c(all_age, college_count,college_all,secondary_count,secondary)
+control_edu<-c(control_age, college_control_count,college_control,secondary_control_count,secondary_control)
+treatment_edu<-c(treatment_age, college_treatment_count,college_treatment,secondary_treatment_count,secondary_treatment)
+  
+table2<-cbind(all_edu, control_edu, treatment_edu)
+row.names(table2)= c("Mean Age", "Total People with College Degree and Above","College Degree (%),","Total People with Secondary Degree and Above","Secondary and Above (%)")
+table2 %>% kbl( booktabs = T, col.names=c("All","Control","Treatment"),caption="Comparison of Participants with College Degree and Secondary Degree",
+                align=rep('c', 3)) %>% 
+                  row_spec(1, hline_after = TRUE) %>%
+                  row_spec(3, hline_after = TRUE) %>%
+
+  kable_styling()
+```
+
+Table \@ref(tab:table2) is created through the kable function in the knitr package and @citekableExtra as well. The majority of the participants have a secondary education or above (99%) while around half have a college degree (56%). The number of participants who have a secondary degree and college degree are quite similar across the two different conditions, with treatment having a slightly higher number of participants with higher education. This correlates with the treatment group having a slightly higher mean age than the control group, by 0.17 years.   
+
+
+### An Increase in Age Does Not Necessarily Mean Higher Education
+```{r age, echo = FALSE}
+main_exp %>% filter(age >18) %>% 
+  ggplot(aes(age, fill = as.factor(education))) +
+  geom_bar(position = "dodge") +
+  labs(title = "Education not directly correlated with Age", caption = "Distribution of Participants in terms of Education and Age")+ 
+  scale_fill_discrete(name = "Education")+
+  scale_x_continuous(name = "Age")+
+  scale_y_continuous(name = "Count of Participants")+
+  theme_classic()
+
+```
+Figure \@ref(fig:age) is created through ggplot(@citeggplot2). The figure demonstrates that an increase in age is not necessarily correlated with a higher education. 9 is the highest level of education, and 3 is the lowest. Education seems to increase with age to around 32, where after 32 education seems to decrease. This can be explained by Saudi Arabia's relatively late establishment of higher education. The first modern university was established in 1957, with 1982 having 63,563 students, around 1 percent of the population who were between 15 to 64 year old (@citeedu). Therefore to investigate the effects of education, age is not a factor that can be used to replace it in conducting analysis.
+
+### Wife's Employment Status Relates to Both Employment Status of Husband and Education Level
+```{r employed, echo = FALSE}
+employed1<- main_exp %>% filter(employed_now == 1) %>% 
+  ggplot(aes(x = education, y= wife_employ, fill = as.factor(condition2))) +
+  geom_col() +
+  labs(title = "Employed Participant")+ 
+  scale_fill_discrete(name = "Condition", labels = c("Control", "Treatment"))+
+  scale_x_continuous(name = "Education Level", limits = c(0,10))+
+  scale_y_continuous(name = "Wife Employed")+
+  theme_classic()
+employed2<- main_exp %>% filter(employed_now == 0) %>% 
+  ggplot(aes(x = education, y= wife_employ, fill = as.factor(condition2))) +
+  geom_col()+
+  labs(title = "Unemployed Participant")+ 
+  scale_fill_discrete(name = "Condition", labels = c("Control", "Treatment"))+
+  scale_x_continuous(name = "Education Level", limits = c(0, 10))+
+  scale_y_continuous(name = "Wife Employed")+
+  theme_classic()
+employed1/employed2 + plot_annotation(
+  title = 'Wife Employed is Different Across Conditions for Education ',
+  caption = 'Wife employed is taken from main experiment. '
+)
+```
+
+Figure \@ref(fig:employed) is created through ggplot(@citeggplot2) and patchwork (@citepatchwork). The 2 figures compare The differences in the total number of wife employed for the scenario whether the participant is employed or not. For unemployed participants, having an education level of 3, which is equivalent to a secondary degree, is the highest overall bin for employed wives. For employed participants, an education of around 6, equivalent to a college degree, is the highest bin. This demonstrates that there seems to be different trends in wife employment conditional to both education and employment status of the participant. The trends between control and treatment group are relatively similar, confirming Table \@ref(tab:table1) findings that the two groups are quite similar. 
+
+
+# Methodology
+
+The paper focuses on two goals. First, to see whether there is a difference in terms of misperception when changing employment status and education level of the participants. Second, seeing how changing employment status and education level will affect the sign-up rates for the job-matching service. This is equivalent to an investigation of whether correcting misperceptions has the same effect for different groups, in providing support of women working outside of home. 
+
+To calculate the difference in terms of misperception, wedges between the guess and objective truth is calculated for the various sessions and conditions. Guesses are calculated by the participant's answers of their personal belief in terms of support of women working outside of home and the participant's guess on the number of other participants in the session of 30 who also support the cause. The objective truth is calculated by getting the average support for each 17 session. Despite segregating on additional conditions, the calculations of the outside guesses, objectives, and wedges are left the same. 
+
+
+The investigation of the sign-up rates for the job-matching service utilizes a combination of binomial test to find confidence intervals, two proportions sample test  of equality to find p-value, and the average percentage of participants who signed-up their wife for the service. A binomial test is appropriate as it is a comparison between the two different conditions, control and treatment. The testing for equality of proportions and p-value will reveal whether it is plausible to conclude that there is a difference between the two groups, hence a difference in clearing up misperceptions in providing more support for women to work. 
+
+
+# Results
+
+## Education No Significant Effect on Misperceptions
+```{r wedge_edu, echo = FALSE}
+#wedge calculated by guess - actual 
+current_wedge<-main_exp %>% filter(college == 1) %>% 
+  ggplot(aes(x=(outside_wedge/30)*100),)+
+  geom_histogram(aes(y = ..density..),bins=20, fill = "light gray",color = "black",na.rm = TRUE, breaks = seq(-100, 30, by =10)) +
+  theme_classic()+
+    scale_x_continuous(name= "Wedge (guess% - objective %)",breaks = c(-100,-80,-60,-40,-20,0,20,40,60,80,100),limits =c(-100,100))+
+  labs (subtitle = "College and Above")+
+  scale_y_continuous(name = "Density", breaks = c(0,.005,.01,.015),limits = c(0,.015))+
+  geom_vline(xintercept=0, color = "dark red", linetype = "dashed")+
+   theme(
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle =element_text(hjust = 0.5,face = "italic"),
+        plot.caption=element_text(hjust = 0.5),
+        aspect.ratio=0.6
+
+        )
+original_wedge<-main_exp %>% filter(secondary == 1) %>% 
+  ggplot(aes(x=(outside_wedge/30)*100),)+
+  geom_histogram(aes(y = ..density..),bins=20, fill = "light gray",color = "black",na.rm = TRUE, breaks = seq(-100, 30, by =10)) +
+  theme_classic()+
+    scale_x_continuous(name= "Wedge (guess% - objective %)",breaks = c(-100,-80,-60,-40,-20,0,20,40,60,80,100),limits =c(-100,100))+
+  labs (subtitle = "(Secondary degree and above)")+
+  scale_y_continuous(name = "Density", breaks = c(0,.005,.01,.015),limits = c(0,.015))+
+  geom_vline(xintercept=0, color = "dark red", linetype = "dashed")+
+   theme(
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle =element_text(hjust = 0.5,face = "italic"),
+        plot.caption=element_text(hjust = 0.5),
+        aspect.ratio=0.6
+
+        )
+#referenced @citepatchwork
+current_wedge + original_wedge +plot_annotation(
+  title = "Perception Wedge of Other's Belief in WWOH Similar Across Eduational Levels",
+  caption = "Wedges in Perception of Others' Beliefs",
+    theme=theme(plot.title = element_text(hjust = 0.5)) &
+    theme(plot.caption = element_text(hjust = 0.5))
+)
+```
+Fig \@ref(fig:wedge_edu) compares the perception wedge for the different education level of secondary degree and college degree. Both graphs produce similar results, with a similar range and similar shape as well. While there seems to be a larger proportion of positive wedges for college degrees, meaning that the participants overestimated the support for women working outside of home, secondary degree and above has a higher bar for the bin 0-10%, meaning more accurate guesses. It is hard to differentiate just from this graph whether education would lead to fewer misperceptions.
+
+
+## Unemployed Participants have More Severe Misperceptions
+```{r wedge_employ, echo = FALSE}
+#wedge calculated by guess - actual 
+current_wedge<-main_exp %>% filter(employed_now == 1) %>% 
+  ggplot(aes(x=(outside_wedge/30)*100),)+
+  geom_histogram(aes(y = ..density..),bins=20, fill = "light gray",color = "black",na.rm = TRUE, breaks = seq(-100, 30, by =10)) +
+  theme_classic()+
+    scale_x_continuous(name= "Wedge (guess% - objective %)",breaks = c(-100,-80,-60,-40,-20,0,20,40,60,80,100),limits =c(-100,100))+
+  labs (subtitle = "Employed Participant")+
+  scale_y_continuous(name = "Density", breaks = c(0,.005,.01,.015),limits = c(0,.015))+
+  geom_vline(xintercept=0, color = "dark red", linetype = "dashed")+
+   theme(
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle =element_text(hjust = 0.5,face = "italic"),
+        plot.caption=element_text(hjust = 0.5),
+        aspect.ratio=0.6
+
+        )
+original_wedge<-main_exp %>% filter(employed_now == 0) %>% 
+  ggplot(aes(x=(outside_wedge/30)*100),)+
+  geom_histogram(aes(y = ..density..),bins=20, fill = "light gray",color = "black",na.rm = TRUE, breaks = seq(-100, 30, by =10)) +
+  theme_classic()+
+    scale_x_continuous(name= "Wedge (guess% - objective %)",breaks = c(-100,-80,-60,-40,-20,0,20,40,60,80,100),limits =c(-100,100))+
+  labs (subtitle = "Unemployed Participant")+
+  scale_y_continuous(name = "Density", breaks = c(0,.005,.01,.015),limits = c(0,.015))+
+  geom_vline(xintercept=0, color = "dark red", linetype = "dashed")+
+   theme(
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle =element_text(hjust = 0.5,face = "italic"),
+        plot.caption=element_text(hjust = 0.5),
+        aspect.ratio=0.6
+
+        )
+#referenced @citepatchwork
+current_wedge + original_wedge +plot_annotation(
+  title = "Unemployed Particpants have More Severe Misperceptions",
+  caption = "Wedges in Perception of Others' Beliefs",
+    theme=theme(plot.title = element_text(hjust = 0.5)) &
+    theme(plot.caption = element_text(hjust = 0.5))
+)
+```
+Fig \@ref(fig:wedge_employ) shows two largely different shapes. However, in terms of the overall distribution, both employed and unemployed participants underestimate the support of women working outside of home, as demonstrated by the majority distribution to the left of 0. However, when looking in terms of severity, unemployed participants have large wedges of around 40-80%, while the employed participants have large wedges around 0-40%. Assuming that wedges represent misperceptions, this means that unemployed participants had larger misperceptions, severely underestimating the support for women working outside of home. 
+
+## Replicated Findings: Treatment Leads to Higher Job-Matching Sign-Up
+```{r rep, echo = FALSE}
+rates<-main_exp %>% group_by (condition2) %>% 
+  summarise(sign_up_rate = mean(signed_up_number)*100) 
+
+sign0 <- as.numeric(rates[1,2])	
+sign1 <-as.numeric(rates[2,2])
+
+condition0<-main_exp %>% filter(condition2 ==0)
+condition1<-main_exp %>% filter(condition2 ==1)
+#compute ci error bars
+ci0<-binom.test(sum(condition0$signed_up_number),length(condition0$signed_up_number),conf.level = 0.95)
+ci1<-binom.test(sum(condition1$signed_up_number),length(condition1$signed_up_number),conf.level = 0.95)
+ub0<-ci0$conf.int[2]
+ub1<-ci1$conf.int[2]
+lb0<-ci0$conf.int[1]
+lb1<-ci1$conf.int[1]
+
+#calculate proportion (attain p value)
+signed0<-sum(condition0$signed_up_number)
+signed1<-sum(condition1$signed_up_number)
+length0<-length(condition0$signed_up_number)
+length1<-length(condition1$signed_up_number)
+result<-prop.test(x =c(signed0,signed1),n = c(length0,length1))
+pval<- result$p.value
+
+#graph results
+results<-data.frame(
+  condition = c(0,1),
+  sign_up_rate = c(sign0,sign1),
+  high_rate = c(ub0*100,ub1*100),
+  low_rate = c(lb0*100,lb1*100))
+
+#reference @citeerrorbar
+ggplot(results) +
+    geom_bar( aes(x=condition, y=sign_up_rate, fill = condition), stat="identity", position = "dodge", fill="gray", alpha=0.7) +
+    geom_errorbar( aes(x=condition, ymin=low_rate, ymax=high_rate), width=0.4, colour="dark red", alpha=0.9, size=1.3)+
+   annotate(geom = "text",
+           label = c("p value",round(pval,4)),x=c(0.3,0.5),
+           y=34,
+           vjust = 1,
+           hjust = 1,
+           size = 3,)+
+  annotate(geom = "text",
+           label = c(round(sign0,2),"%",round(sign1,2),"%"),
+           x=c(0,0.05,1,1.05),
+           y=10,
+           vjust = 1,
+           hjust = 1,
+           size = 3)+
+  theme_classic()+
+  scale_x_continuous("", breaks = c(0,1),labels = c("Control", "Treatment"))+
+  labs(ylab = "% Sign up",
+       title = "Job Matching Service Sign up",
+       caption = "Job Matching Service Sign Up using binomial proportion CI and p-value from equality of proportions testing. Red error bars indicate CI calculated and bars the actual proportion.")
+```
+
+Fig \@ref(fig:rep) replicates the original authors' findings regarding the relationship of correcting misperceptions regarding support of women working outside of home and higher job-matching sign-up. The p-value is significant and there is almost a 10% difference between the two groups, even without calculating the confidence intervals. 
+
+## Employment Status of Participant Has no Significant Effect on Wife Employment Status  
+
+```{r epr, echo = FALSE}
+#filter only those who are employed
+rates<-main_exp %>% filter(employed_now ==1) %>% 
+group_by (condition2) %>% 
+  summarise(sign_up_rate = mean(signed_up_number)*100) 
+
+sign0 <- as.numeric(rates[1,2])	
+sign1 <-as.numeric(rates[2,2])
+
+condition0<-main_exp %>% filter(condition2 ==0) %>% filter(employed_now ==1)
+condition1<-main_exp %>% filter(condition2 ==1) %>% filter(employed_now ==1)
+#compute ci error bars
+ci0<-binom.test(sum(condition0$signed_up_number),length(condition0$signed_up_number),conf.level = 0.95)
+ci1<-binom.test(sum(condition1$signed_up_number),length(condition1$signed_up_number),conf.level = 0.95)
+ub0<-ci0$conf.int[2]
+ub1<-ci1$conf.int[2]
+lb0<-ci0$conf.int[1]
+lb1<-ci1$conf.int[1]
+
+#calculate proportion (attain p value)
+signed0<-sum(condition0$signed_up_number)
+signed1<-sum(condition1$signed_up_number)
+length0<-length(condition0$signed_up_number)
+length1<-length(condition1$signed_up_number)
+result<-prop.test(x =c(signed0,signed1),n = c(length0,length1))
+pval<- result$p.value
+#graph results
+results<-data.frame(
+  condition = c(0,1),
+  sign_up_rate = c(sign0,sign1),
+  high_rate = c(ub0*100,ub1*100),
+  low_rate = c(lb0*100,lb1*100)
+)
+#reference @citeerrorbar
+ggplot(results) +
+    geom_bar( aes(x=condition, y=sign_up_rate, fill = condition), stat="identity", position = "dodge", fill="gray", alpha=0.7) +
+    geom_errorbar( aes(x=condition, ymin=low_rate, ymax=high_rate), width=0.4, colour="dark red", alpha=0.9, size=1.3)+
+   annotate(geom = "text",
+           label = c("p value",round(pval,4)),x=c(0.3,0.5),
+           y=34,
+           vjust = 1,
+           hjust = 1,
+           size = 3,)+
+  annotate(geom = "text",
+           label = c(round(sign0,2),"%",round(sign1,2),"%"),
+           x=c(0,0.05,1,1.05),
+           y=10,
+           vjust = 1,
+           hjust = 1,
+           size = 3)+
+  theme_classic()+
+  scale_x_continuous("", breaks = c(0,1),labels = c("Control", "Treatment"))+
+  labs(ylab = "% Sign up",
+       title = "Job Matching Service Sign up",
+       subtitle = "Husband Employed condition",
+       caption = "Job Matching Service Sign Up using binomial proportion CI and p-value from equality of proportions testing. Red error bars indicate CI calculated and bars the actual proportion.")
+```
+Fig \@ref(fig:epr) uses the additional condition that the participant is employed. Results yield a slight decrease for the treatment group, from 32.02% to 31.94%. Control group has a slight rise from 23.48% to 23.72%, which is still quite insignificant. The opposite effects, in addition to the insignificant p-values leads no conclusive results. 
+
+
+## Higher Education Does Not Necessarily Mean Higher Job Matching Service Sign Up
+```{r sec, echo = FALSE}
+#filter only those who are employed and have secondary degree
+rates<-main_exp  %>% filter(secondary ==1) %>% 
+group_by (condition2) %>% 
+  summarise(sign_up_rate = mean(signed_up_number)*100) 
+
+sign0 <- as.numeric(rates[1,2])	
+sign1 <-as.numeric(rates[2,2])
+
+condition0<-main_exp %>% 
+  filter(condition2 ==0) %>% 
+  filter(secondary ==1) 
+condition1<-main_exp %>% 
+  filter(condition2 ==1) %>% 
+  filter(secondary ==1)
+#compute ci error bars
+ci0<-binom.test(sum(condition0$signed_up_number),length(condition0$signed_up_number),conf.level = 0.95)
+ci1<-binom.test(sum(condition1$signed_up_number),length(condition1$signed_up_number),conf.level = 0.95)
+ub0<-ci0$conf.int[2]
+ub1<-ci1$conf.int[2]
+lb0<-ci0$conf.int[1]
+lb1<-ci1$conf.int[1]
+
+#calculate proportion (attain p value)
+signed0<-sum(condition0$signed_up_number)
+signed1<-sum(condition1$signed_up_number)
+length0<-length(condition0$signed_up_number)
+length1<-length(condition1$signed_up_number)
+result<-prop.test(x =c(signed0,signed1),n = c(length0,length1))
+pval<- result$p.value
+#graph results
+results<-data.frame(
+  condition = c(0,1),
+  sign_up_rate = c(sign0,sign1),
+  high_rate = c(ub0*100,ub1*100),
+  low_rate = c(lb0*100,lb1*100)
+)
+#reference @citeerrorbar
+ggplot(results) +
+    geom_bar( aes(x=condition, y=sign_up_rate, fill = condition), stat="identity", position = "dodge", fill="gray", alpha=0.7) +
+    geom_errorbar( aes(x=condition, ymin=low_rate, ymax=high_rate), width=0.4, colour="dark red", alpha=0.9, size=1.3)+
+   annotate(geom = "text",
+           label = c("p value",round(pval,4)),x=c(0.3,0.5),
+           y=34,
+           vjust = 1,
+           hjust = 1,
+           size = 3,)+
+  annotate(geom = "text",
+           label = c(round(sign0,2),"%",round(sign1,2),"%"),
+           x=c(0,0.05,1,1.05),
+           y=10,
+           vjust = 1,
+           hjust = 1,
+           size = 3)+
+  theme_classic()+
+  scale_x_continuous("", breaks = c(0,1),labels = c("Control", "Treatment"))+
+  labs(ylab = "% Sign up",
+       title = "Job Matching Service Sign up",
+       subtitle = "Secondary education",
+       caption = "Job Matching Service Sign Up using binomial proportion CI and p-value from equality of proportions testing. Red error bars indicate CI calculated and bars the actual proportion.")
+```
+Fig \@ref(fig:sec) expands the investigated population from college degree and above to those with secondary degrees and above. There is a slight increase in comparison with the original findings for both conditions. Control increases from 23.48% to 23.67%, and treatment increases from 32.02% to 32.66%. The p-value also is around 0.03, very similar to the original findings. As the original finding selected a more exclusive, higher degree of education, it seems that higher education is not correlated with participants' willingness to sign their wife for the job-matching service, for both conditions. 
+
+
+# Discussion
+
+## Misperceptions
+
+Education did not play a prominent role in affecting the size of wedge, and hence the misperceptions of the candidates. A potential reason behind this could be the similarity in education level, as college and secondary degree are only 4 years apart of school. 
+However, employment overall had a more important effect in terms of influencing how severe the participant underestimated or overestimated the results. More unemployed participants had severe underestimates in comparison to the employed participants. A potential reason could be how their own mental state affects their decision. As they are currently jobless, they may believe that it is quite difficult to secure a job, not to mention for a women to work outside of home. A weakness for the investigation done is what can be seen is only the size of the wedge, the size of the misperception. The exact reasons behind such an increase or severe underestimate can only be hypothesized or discussed through other findings. 
+
+## Job Matching Services 
+
+The investigation for both the variables of education and employment status of the participant yield evidence that they are not correlated with an increase in support for women working outside of home, with no actual action in increasing the sign-up rate for job matching services. This report replicates the original findings of the authors, and then created additional conditions to see whether other factors could play roles in increasing support for women working outside of home. 
+
+### Employment Status
+
+While the descriptive data statistics revealed that there seemed to be some relationship between wife employment and the employment status of the husband, such relationships were not discovered within the results. This means that there is no real correlation between the two factors. While the husband does play a more dominant role in Saudi Arabia in terms of familial dynamics, there does not seem to be an intentional factor in ensuring that their pride and status is validated by intentionally pressuring the women. 
+
+Gender inequality is an issue that is emphasized when discussing Saudi Arabia and the status of women. While there are points that seem to be illogical, such as women not being able to make their own decisions but are tasked with the duty to raise children, it seems that this does not play that large of a dynamic in terms of job status (@citeguardianship). To take advantage of the market demand and large labour market supply of women candidates, efforts do not necessarily need to be made to ensure equality in terms of work status for the family, but rather efforts should be focused in palces such as demonstrating the community-wide support for women working outside of home. 
+
+### Education
+While education is often emphasized as the solution to all problems, education is not the solution for the support of women working outside of home. While it seems to make sense logical that a higher level of education would lead to higher gender equality and support for women working outside of home, it is not necessary in terms of reaching the goal of supporting women. Both parties with and without the information had relatively similar actions in terms of signing up their wife for job-matching services, despite having different education degrees. A potential weakness is that when investigating secondary level education or above, the initial subset of college level and above education was also included. Perhaps a better, more representative comparison would isolate the two specific levels of college education and secondary education to conduct analytics. 
+
+
+## Potential Implications Limits
+
+It is important that the results of this paper is interpreted in a way that does not have harmful implications. While this report assumes that wedges in perception represents misperception, this does not necessarily mean that this is bad. Bias and prejudice is something that everyone has, and should not be something that we are ashamed of. Furthermore, this report briefly touches upon how misperception can be measured. There are multiple ways that misperception can be defined and measured, with none necessarily being better than the other. A larger misperception was determined in terms of how severe the candidate underestimated or overestimated the actual answer. This one instance that represents the participants' opinion should be viewed as a single instance and not representative of the participants' overall level of misperception and bias. Furthermore, having misperceptions regarding the support of women working outside home does not necessarily mean that the candidate has bias against women. As the descriptive statistics demonstrate, a significant amount of participants had wives that were employed, even though they were not working outside of home. 
+
+
+## Next Steps
+
+There are a few direct next steps that can be taken from this paper and its original findings from the original paper. First, a more detailed investigation into the effects of education should be conducted. The difference between secondary degree and college degree is only by 4 years, which can be quite minimal. A better analysis at the differences of education could conduct a survey interviewing a sample from a larger population with a greater range of educational background, and comparing a more extreme case, such as PHD and primary education. 
+
+Furthermore, a study could be conducted focusing on the rural areas of Saudi Arabia. The dataset samples 500 men from Riyadh, the capital of Saudi Arabia. The difference between urban and rural areas could provide a better insight into how the situation of support for women working outside of home differs within Saudi Arabia itself. 
+
+A comparison regarding the perceptions of women working and women working outside of home would be an extension that looks into a similar topic. It would both investigate social norms, role of gender, and misperceptions as well. Furthermore, such a comparison could help reveal underlying factors behind the differing rates of employment and employment outside of home, other than the presumed social stigma and lack of support. 
+
+On the other hand, conducting a similar experiment across Islamic Middle East would be insightful to see how culture affects social stigma as well. Middle Eastern countries, while having similarities, such as male guardianship, have more niche differences in terms of how culture plays out in life, in terms of policies. An investigation of the various situations in the different countries could help reveal what specific social norms are at play in the differences in supporting women working outside of home. 
+
+\newpage
+
+
+# References
+
+
